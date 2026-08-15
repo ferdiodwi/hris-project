@@ -94,7 +94,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'hris_db',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': '123',
         'HOST': '127.0.0.1',
         'PORT': '3306',
         'OPTIONS': {
@@ -166,3 +166,5 @@ REST_FRAMEWORK = {
         'login': '5/min' # Custom throttle untuk endpoint login
     }
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
