@@ -1,5 +1,5 @@
 asgiref
-Django
+Django<6.0
 PyMySQL
 sqlparse
 djangorestframework
