@@ -2,6 +2,7 @@ import uuid
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework_simplejwt.tokens import RefreshToken
 from uam.permissions import HasRBACPermission
 from .serializers import RegisterSerializer, ForgotPasswordSerializer
 from django.contrib.auth import get_user_model
@@ -52,3 +53,17 @@ class ForgotPasswordView(generics.GenericAPIView):
         except User.DoesNotExist:
             # Agar tidak membocorkan informasi apakah email terdaftar atau tidak
             return Response({"message": "Instruksi reset password telah dikirim ke email Anda."}, status=status.HTTP_200_OK)
+
+class LogoutView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response({"message": "Berhasil logout."}, status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response({"error": "Token tidak valid atau gagal diblacklist."}, status=status.HTTP_400_BAD_REQUEST)
+

@@ -1,0 +1,181 @@
+{
+  "info": {
+    "name": "HRIS API",
+    "description": "API Collection untuk HRIS Project (Accounts & UAM). Gunakan dengan Postman atau Apidog.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "username", "value": "admin", "type": "text" },
+                { "key": "password", "value": "admin123", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login", ""]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "refresh", "value": "<isi_dengan_refresh_token>", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login/refresh/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login", "refresh", ""]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer <isi_dengan_access_token>",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "refresh", "value": "<isi_dengan_refresh_token_yang_mau_di_logout>", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/logout/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "logout", ""]
+            }
+          }
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer <isi_dengan_access_token_admin>",
+                "type": "text",
+                "description": "Bearer token diperlukan karena endpoint ini diproteksi oleh RBAC (User Management)."
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "username", "value": "johndoe", "type": "text" },
+                { "key": "email", "value": "johndoe@example.com", "type": "text" },
+                { "key": "password", "value": "secret12345", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register", ""]
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "email", "value": "johndoe@example.com", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/forgot-password/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "forgot-password", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "UAM (User Access Management)",
+      "item": [
+        {
+          "name": "Assign Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer <isi_dengan_access_token_admin>",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "user", "value": "1", "description": "ID dari User", "type": "text" },
+                { "key": "role", "value": "2", "description": "ID dari Role", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/uam/assign-role/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "uam", "assign-role", ""]
+            }
+          }
+        },
+        {
+          "name": "Assign Permission",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer <isi_dengan_access_token_admin>",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "role", "value": "2", "description": "ID dari Role", "type": "text" },
+                { "key": "permission", "value": "1", "description": "ID dari Permission", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/uam/assign-permission/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "uam", "assign-permission", ""]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000"
+    }
+  ]
+}
