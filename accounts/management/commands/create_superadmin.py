@@ -8,14 +8,24 @@ class Command(BaseCommand):
     help = 'Membuat akun Super Admin dan menghubungkannya dengan Role "Super Admin"'
 
     def add_arguments(self, parser):
-        parser.add_argument('--username', type=str, required=True, help='Username untuk Super Admin')
-        parser.add_argument('--email', type=str, required=True, help='Email untuk Super Admin')
-        parser.add_argument('--password', type=str, required=True, help='Password untuk Super Admin')
+        parser.add_argument('--username', type=str, help='Username untuk Super Admin')
+        parser.add_argument('--email', type=str, help='Email untuk Super Admin')
+        parser.add_argument('--password', type=str, help='Password untuk Super Admin')
 
     def handle(self, *args, **kwargs):
-        username = kwargs['username']
-        email = kwargs['email']
-        password = kwargs['password']
+        import getpass
+
+        username = kwargs.get('username')
+        while not username:
+            username = input('Username: ')
+
+        email = kwargs.get('email')
+        while not email:
+            email = input('Email: ')
+
+        password = kwargs.get('password')
+        while not password:
+            password = getpass.getpass('Password: ')
 
         # 1. Pastikan Role "Super Admin" sudah ada
         role, created = Role.objects.get_or_create(name='Super Admin')
