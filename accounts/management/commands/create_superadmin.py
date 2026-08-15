@@ -5,41 +5,35 @@ from uam.models import Role, UserRole
 User = get_user_model()
 
 class Command(BaseCommand):
-    help = 'Create a superadmin user and automatically assign the "Super Admin" role to it.'
+    help = 'Membuat akun Super Admin dan menghubungkannya dengan Role "Super Admin"'
 
     def add_arguments(self, parser):
-        parser.add_argument('--username', required=True, type=str)
-        parser.add_argument('--email', required=True, type=str)
-        parser.add_argument('--password', required=True, type=str)
+        parser.add_argument('--username', type=str, required=True, help='Username untuk Super Admin')
+        parser.add_argument('--email', type=str, required=True, help='Email untuk Super Admin')
+        parser.add_argument('--password', type=str, required=True, help='Password untuk Super Admin')
 
-    def handle(self, *args, **options):
-        username = options['username']
-        email = options['email']
-        password = options['password']
+    def handle(self, *args, **kwargs):
+        username = kwargs['username']
+        email = kwargs['email']
+        password = kwargs['password']
 
-        # 1. Pastikan Role "Super Admin" ada
-        role, _ = Role.objects.get_or_create(name='Super Admin')
+        # 1. Pastikan Role "Super Admin" sudah ada
+        role, created = Role.objects.get_or_create(name='Super Admin')
+        if created:
+            self.stdout.write(self.style.WARNING('Role "Super Admin" belum ada, secara otomatis dibuat.'))
 
         # 2. Buat User
-        user, user_created = User.objects.get_or_create(
+        if User.objects.filter(username=username).exists():
+            self.stdout.write(self.style.ERROR(f'User dengan username "{username}" sudah ada!'))
+            return
+
+        user = User.objects.create_user(
             username=username,
-            defaults={'email': email}
+            email=email,
+            password=password
         )
+        self.stdout.write(self.style.SUCCESS(f'User "{username}" berhasil dibuat.'))
 
-        if user_created:
-            user.set_password(password)
-            user.save()
-            self.stdout.write(self.style.SUCCESS(f'Berhasil membuat user "{username}"'))
-        else:
-            self.stdout.write(self.style.WARNING(f'User "{username}" sudah ada. Memperbarui password...'))
-            user.set_password(password)
-            user.save()
-
-        # 3. Assign Role "Super Admin" ke User tersebut
-        user_role, role_created = UserRole.objects.get_or_create(user=user, role=role)
-        if role_created:
-            self.stdout.write(self.style.SUCCESS(f'Berhasil memberikan akses "Super Admin" ke user "{username}"'))
-        else:
-            self.stdout.write(self.style.WARNING(f'User "{username}" sudah memiliki akses "Super Admin"'))
-
-        self.stdout.write(self.style.SUCCESS('Proses pembuatan Super Admin selesai!'))
+        # 3. Hubungkan User dengan Role "Super Admin"
+        UserRole.objects.create(user=user, role=role)
+        self.stdout.write(self.style.SUCCESS(f'User "{username}" berhasil dijadikan Super Admin!'))
