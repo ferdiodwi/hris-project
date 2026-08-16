@@ -1,7 +1,10 @@
-asgiref
-Django<6.0
-PyMySQL
-sqlparse
-djangorestframework
+asgiref==3.12.1
+Django==5.2.17
+djangorestframework==3.18.0
 djangorestframework_simplejwt==5.5.1
-python-dotenv
+PyJWT==2.13.0
+PyMySQL==1.2.0
+python-dotenv==1.2.2
+sqlparse==0.6.0
+typing_extensions==4.16.0
+tzdata==2026.3

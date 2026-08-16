@@ -25,9 +25,12 @@ urlpatterns = [
         "api/shifting/",
         include("shifting.urls"),
     ),
-
     path(
         'api/',
         include('organization.urls'),
+    ),
+    path(
+        "api/payroll/",
+        include("payroll.urls")
     ),
 ]
