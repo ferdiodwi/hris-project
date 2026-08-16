@@ -1,10 +1,18 @@
 import uuid
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets
+from rest_framework.decorators import action
+from datetime import date
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from uam.permissions import HasRBACPermission
-from .serializers import RegisterSerializer, ForgotPasswordSerializer
+from .serializers import (
+    RegisterSerializer, 
+    ForgotPasswordSerializer,
+    EmployeeSerializer,
+    EmployeeHistorySerializer
+)
+from .models import Employee, EmployeeHistory
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -67,3 +75,70 @@ class LogoutView(generics.GenericAPIView):
         except Exception as e:
             return Response({"error": "Token tidak valid atau gagal diblacklist."}, status=status.HTTP_400_BAD_REQUEST)
 
+class EmployeeViewSet(viewsets.ModelViewSet):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+    permission_classes = [IsAuthenticated, HasRBACPermission]
+    rbac_module = 'User Management'
+
+    @action(detail=True, methods=['get'])
+    def history(self, request, pk=None):
+        employee = self.get_object()
+        history = EmployeeHistory.objects.filter(employee=employee).order_by('-effective_date')
+        serializer = EmployeeHistorySerializer(history, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['post'])
+    def onboard(self, request, pk=None):
+        employee = self.get_object()
+        EmployeeHistory.objects.create(
+            employee=employee,
+            event_type='onboarding',
+            new_job_title=employee.job_title,
+            effective_date=date.today(),
+            note=request.data.get('note', 'Karyawan baru di-onboard.')
+        )
+        return Response({'message': 'Berhasil onboard karyawan.'})
+
+    @action(detail=True, methods=['post'])
+    def mutate(self, request, pk=None):
+        employee = self.get_object()
+        new_job_title_id = request.data.get('new_job_title_id')
+        if not new_job_title_id:
+            return Response({'error': 'new_job_title_id wajib diisi.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        old_job_title = employee.job_title
+        employee.job_title_id = new_job_title_id
+        employee.save()
+
+        EmployeeHistory.objects.create(
+            employee=employee,
+            event_type='mutasi',
+            old_job_title=old_job_title,
+            new_job_title=employee.job_title,
+            effective_date=date.today(),
+            note=request.data.get('note', 'Karyawan dimutasi.')
+        )
+        return Response({'message': 'Berhasil mutasi karyawan.'})
+
+    @action(detail=True, methods=['post'])
+    def offboard(self, request, pk=None):
+        employee = self.get_object()
+        employee.status = 'inactive'
+        employee.termination_date = date.today()
+        employee.save()
+
+        EmployeeHistory.objects.create(
+            employee=employee,
+            event_type='offboarding',
+            old_job_title=employee.job_title,
+            effective_date=date.today(),
+            note=request.data.get('note', 'Karyawan di-offboard.')
+        )
+        return Response({'message': 'Berhasil offboard karyawan.'})
+
+class EmployeeHistoryViewSet(viewsets.ModelViewSet):
+    queryset = EmployeeHistory.objects.all()
+    serializer_class = EmployeeHistorySerializer
+    permission_classes = [IsAuthenticated, HasRBACPermission]
+    rbac_module = 'User Management'
