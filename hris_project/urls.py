@@ -25,4 +25,8 @@ urlpatterns = [
         "api/shifting/",
         include("shifting.urls"),
     ),
+    path(
+    "api/payroll/",
+    include("payroll.urls")
+    ),
 ]
