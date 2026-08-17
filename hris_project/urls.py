@@ -26,7 +26,7 @@ urlpatterns = [
         include("shifting.urls"),
     ),
     path(
-        'api/',
+        'api/organization/',
         include('organization.urls'),
     ),
     path(
