@@ -1,14 +1,27 @@
 from decimal import Decimal
-
-from rest_framework import status, viewsets
+from django.shortcuts import get_object_or_404
+from rest_framework import status, viewsets, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
+from rest_framework.views import APIView
 from .models import SalaryComponent
+
+from .models import (
+    PayrollProfile,
+    PayrollRun,
+    Payslip,
+)
 
 from .serializers import (
     MealAllowanceCalculationSerializer,
     SalaryComponentSerializer,
+    PayrollProfileSerializer,
+    PayrollRunPay02Serializer,
+    PayslipPay02Serializer,
+)
+
+from .services.payroll_service import (
+    process_payroll_run,
 )
 
 from .services.attendance_service import (
@@ -142,4 +155,131 @@ class SalaryComponentViewSet(viewsets.ModelViewSet):
             },
 
             status=status.HTTP_200_OK,
+        )
+
+class PayrollProfileListCreateView(
+    generics.ListCreateAPIView
+):
+    queryset = (
+        PayrollProfile.objects
+        .select_related("employee")
+        .all()
+    )
+
+    serializer_class = (
+        PayrollProfileSerializer
+    )
+
+
+class PayrollRunPay02ListCreateView(
+    generics.ListCreateAPIView
+):
+    queryset = (
+        PayrollRun.objects
+        .all()
+        .order_by(
+            "-period_year",
+            "-period_month",
+        )
+    )
+
+    serializer_class = (
+        PayrollRunPay02Serializer
+    )
+
+
+class ProcessPayrollRunPay02View(
+    APIView
+):
+    def post(
+        self,
+        request,
+        pk,
+    ):
+        payroll_run = get_object_or_404(
+            PayrollRun,
+            pk=pk,
+        )
+
+        if payroll_run.status == "processing":
+
+            return Response(
+                {
+                    "detail":
+                    "Payroll sedang diproses."
+                },
+                status=status.HTTP_409_CONFLICT,
+            )
+
+        try:
+
+            total_employee = (
+                process_payroll_run(
+                    payroll_run
+                )
+            )
+
+        except ValueError as error:
+
+            return Response(
+                {
+                    "detail":
+                    str(error)
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        except Exception as error:
+
+            return Response(
+                {
+                    "detail":
+                    str(error)
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+        return Response(
+            {
+                "message":
+                    "Payroll PAY-02 berhasil diproses.",
+
+                "payroll_run_id":
+                    payroll_run.id,
+
+                "total_employee":
+                    total_employee,
+
+                "status":
+                    "completed",
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
+class PayrollRunPayslipPay02ListView(
+    generics.ListAPIView
+):
+    serializer_class = (
+        PayslipPay02Serializer
+    )
+
+    def get_queryset(self):
+
+        return (
+            Payslip.objects
+            .filter(
+                payroll_run_id=(
+                    self.kwargs[
+                        "run_id"
+                    ]
+                )
+            )
+            .select_related(
+                "employee",
+                "payroll_run",
+            )
+            .order_by(
+                "employee_id"
+            )
         )
