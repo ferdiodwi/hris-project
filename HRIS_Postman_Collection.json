@@ -2,7 +2,8 @@
   "info": {
     "name": "HRIS API",
     "description": "API Collection untuk HRIS Project (Accounts & UAM). Gunakan dengan Postman atau Apidog.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "c4e8a955-ea4b-4d71-a8cb-79293d7582f2"
   },
   "item": [
     {
@@ -16,16 +17,31 @@
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "username", "value": "admin", "type": "text" },
-                { "key": "password", "value": "admin123", "type": "text" }
+                {
+                  "key": "username",
+                  "value": "admin",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "admin123",
+                  "type": "text"
+                }
               ]
             },
             "url": {
               "raw": "{{base_url}}/api/auth/login/",
-              "host": ["{{base_url}}"],
-              "path": ["api", "auth", "login", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Refresh Token",
@@ -35,15 +51,27 @@
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "refresh", "value": "<isi_dengan_refresh_token>", "type": "text" }
+                {
+                  "key": "refresh",
+                  "value": "<isi_dengan_refresh_token>",
+                  "type": "text"
+                }
               ]
             },
             "url": {
               "raw": "{{base_url}}/api/auth/login/refresh/",
-              "host": ["{{base_url}}"],
-              "path": ["api", "auth", "login", "refresh", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login",
+                "refresh"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Logout",
@@ -59,15 +87,26 @@
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "refresh", "value": "<isi_dengan_refresh_token_yang_mau_di_logout>", "type": "text" }
+                {
+                  "key": "refresh",
+                  "value": "<isi_dengan_refresh_token_yang_mau_di_logout>",
+                  "type": "text"
+                }
               ]
             },
             "url": {
               "raw": "{{base_url}}/api/auth/logout/",
-              "host": ["{{base_url}}"],
-              "path": ["api", "auth", "logout", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "logout"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Register",
@@ -84,17 +123,36 @@
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "username", "value": "johndoe", "type": "text" },
-                { "key": "email", "value": "johndoe@example.com", "type": "text" },
-                { "key": "password", "value": "secret12345", "type": "text" }
+                {
+                  "key": "username",
+                  "value": "johndoe",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "johndoe@example.com",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "secret12345",
+                  "type": "text"
+                }
               ]
             },
             "url": {
               "raw": "{{base_url}}/api/auth/register/",
-              "host": ["{{base_url}}"],
-              "path": ["api", "auth", "register", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Forgot Password",
@@ -104,15 +162,26 @@
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "email", "value": "johndoe@example.com", "type": "text" }
+                {
+                  "key": "email",
+                  "value": "johndoe@example.com",
+                  "type": "text"
+                }
               ]
             },
             "url": {
               "raw": "{{base_url}}/api/auth/forgot-password/",
-              "host": ["{{base_url}}"],
-              "path": ["api", "auth", "forgot-password", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "forgot-password"
+              ]
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -133,16 +202,33 @@
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "user", "value": "1", "description": "ID dari User", "type": "text" },
-                { "key": "role", "value": "2", "description": "ID dari Role", "type": "text" }
+                {
+                  "key": "user",
+                  "value": "1",
+                  "description": "ID dari User",
+                  "type": "text"
+                },
+                {
+                  "key": "role",
+                  "value": "2",
+                  "description": "ID dari Role",
+                  "type": "text"
+                }
               ]
             },
             "url": {
               "raw": "{{base_url}}/api/uam/assign-role/",
-              "host": ["{{base_url}}"],
-              "path": ["api", "uam", "assign-role", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "uam",
+                "assign-role"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Assign Permission",
@@ -158,16 +244,1083 @@
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "role", "value": "2", "description": "ID dari Role", "type": "text" },
-                { "key": "permission", "value": "1", "description": "ID dari Permission", "type": "text" }
+                {
+                  "key": "role",
+                  "value": "2",
+                  "description": "ID dari Role",
+                  "type": "text"
+                },
+                {
+                  "key": "permission",
+                  "value": "1",
+                  "description": "ID dari Permission",
+                  "type": "text"
+                }
               ]
             },
             "url": {
               "raw": "{{base_url}}/api/uam/assign-permission/",
-              "host": ["{{base_url}}"],
-              "path": ["api", "uam", "assign-permission", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "uam",
+                "assign-permission"
+              ]
             }
-          }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Organization Management",
+      "item": [
+        {
+          "name": "Branches",
+          "item": [
+            {
+              "name": "Get Branchs",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/organization/branches/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "branches"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Branch",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Cabang Jakarta",
+                      "type": "text"
+                    },
+                    {
+                      "key": "address",
+                      "value": "Jl. Sudirman",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/organization/branches/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "branches"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Branch",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Cabang Jakarta",
+                      "type": "text"
+                    },
+                    {
+                      "key": "address",
+                      "value": "Jl. Sudirman",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/organization/branches/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "branches",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Branch",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/organization/branches/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "branches",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Directorates",
+          "item": [
+            {
+              "name": "Get Directorates",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/organization/directorates/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "directorates"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Directorate",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Direktorat Operasional",
+                      "type": "text"
+                    },
+                    {
+                      "key": "branch_id",
+                      "value": "1",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/organization/directorates/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "directorates"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Directorate",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Direktorat Operasional",
+                      "type": "text"
+                    },
+                    {
+                      "key": "branch_id",
+                      "value": "1",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/organization/directorates/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "directorates",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Directorate",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/organization/directorates/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "directorates",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Divisions",
+          "item": [
+            {
+              "name": "Get Divisions",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/organization/divisions/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "divisions"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Division",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Divisi IT",
+                      "type": "text"
+                    },
+                    {
+                      "key": "directorate_id",
+                      "value": "1",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/organization/divisions/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "divisions"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Division",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Divisi IT",
+                      "type": "text"
+                    },
+                    {
+                      "key": "directorate_id",
+                      "value": "1",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/organization/divisions/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "divisions",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Division",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/organization/divisions/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "divisions",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Departments",
+          "item": [
+            {
+              "name": "Get Departments",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/organization/departments/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "departments"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Department",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Software Engineering",
+                      "type": "text"
+                    },
+                    {
+                      "key": "division_id",
+                      "value": "1",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/organization/departments/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "departments"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Department",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Software Engineering",
+                      "type": "text"
+                    },
+                    {
+                      "key": "division_id",
+                      "value": "1",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/organization/departments/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "departments",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Department",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/organization/departments/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "departments",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Job Titles",
+          "item": [
+            {
+              "name": "Get JobTitles",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/organization/job-titles/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "job-titles"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create JobTitle",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Backend Engineer",
+                      "type": "text"
+                    },
+                    {
+                      "key": "job_level",
+                      "value": "Staff",
+                      "type": "text"
+                    },
+                    {
+                      "key": "department_id",
+                      "value": "1",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/organization/job-titles/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "job-titles"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update JobTitle",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Backend Engineer",
+                      "type": "text"
+                    },
+                    {
+                      "key": "job_level",
+                      "value": "Staff",
+                      "type": "text"
+                    },
+                    {
+                      "key": "department_id",
+                      "value": "1",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/organization/job-titles/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "job-titles",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete JobTitle",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/organization/job-titles/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organization",
+                    "job-titles",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Core HR (Employees)",
+      "item": [
+        {
+          "name": "Employees CRUD",
+          "item": [
+            {
+              "name": "Get Employees",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/auth/employees/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "employees"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Employee",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "user",
+                      "value": "2",
+                      "type": "text"
+                    },
+                    {
+                      "key": "employee_code",
+                      "value": "EMP-001",
+                      "type": "text"
+                    },
+                    {
+                      "key": "full_name",
+                      "value": "Budi Santoso",
+                      "type": "text"
+                    },
+                    {
+                      "key": "job_title",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "08123456789",
+                      "type": "text"
+                    },
+                    {
+                      "key": "emergency_contact",
+                      "value": "Istri - 08987654321",
+                      "type": "text"
+                    },
+                    {
+                      "key": "bpjs_no",
+                      "value": "1234567890",
+                      "type": "text"
+                    },
+                    {
+                      "key": "npwp_no",
+                      "value": "09.876.543.2-123.000",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/auth/employees/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "employees"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Employee",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "user",
+                      "value": "2",
+                      "type": "text"
+                    },
+                    {
+                      "key": "employee_code",
+                      "value": "EMP-001",
+                      "type": "text"
+                    },
+                    {
+                      "key": "full_name",
+                      "value": "Budi Santoso",
+                      "type": "text"
+                    },
+                    {
+                      "key": "job_title",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "08123456789",
+                      "type": "text"
+                    },
+                    {
+                      "key": "emergency_contact",
+                      "value": "Istri - 08987654321",
+                      "type": "text"
+                    },
+                    {
+                      "key": "bpjs_no",
+                      "value": "1234567890",
+                      "type": "text"
+                    },
+                    {
+                      "key": "npwp_no",
+                      "value": "09.876.543.2-123.000",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/auth/employees/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "employees",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Employee",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/auth/employees/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "employees",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Employee Actions",
+          "item": [
+            {
+              "name": "Get Employee History",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/auth/employees/1/history/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "employees",
+                    "1",
+                    "history"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Onboard Employee",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "note",
+                      "value": "Onboarding karyawan baru via sistem",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/auth/employees/1/onboard/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "employees",
+                    "1",
+                    "onboard"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Mutate Employee",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "new_job_title_id",
+                      "value": "2",
+                      "type": "text"
+                    },
+                    {
+                      "key": "note",
+                      "value": "Promosi ke Senior",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/auth/employees/1/mutate/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "employees",
+                    "1",
+                    "mutate"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Offboard Employee",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer <token>",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "note",
+                      "value": "Resign per tanggal sekian",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/auth/employees/1/offboard/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "employees",
+                    "1",
+                    "offboard"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
         }
       ]
     }
@@ -175,7 +1328,8 @@
   "variable": [
     {
       "key": "base_url",
-      "value": "http://localhost:8000"
+      "value": "http://localhost:8000",
+      "type": "string"
     }
   ]
 }
