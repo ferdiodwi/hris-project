@@ -253,7 +253,14 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.MIGRATE_HEADING('\n📌 [4/4] Seeding UserRole...'))
 
-        # Tambahkan juga akun 'admin' sebagai Super Admin
+        # Pastikan Role bawaan ada (bisa hilang setelah flush)
+        default_roles = ['Super Admin', 'HR Manager', 'Finance', 'Karyawan']
+        for role_name in default_roles:
+            role, created = Role.objects.get_or_create(name=role_name)
+            if created:
+                self.stdout.write(f'   + Role dibuat : {role_name}')
+
+        # Assign Role ke user 'admin'
         from accounts.models import User
         admin_user = User.objects.filter(username='admin').first()
         if admin_user:
@@ -262,6 +269,7 @@ class Command(BaseCommand):
                 ur, created = UserRole.objects.get_or_create(user=admin_user, role=super_admin_role)
                 self.stdout.write(f'   {"+" if created else "~"} admin → Role: Super Admin')
 
+        # Assign Role ke Employee lainnya
         role_map = {
             'ferdio': 'Super Admin',  # Direktur = Super Admin
             'zidane': 'HR Manager',
@@ -278,3 +286,4 @@ class Command(BaseCommand):
                 )
 
         self.stdout.write(self.style.SUCCESS('   ✓ UserRole selesai'))
+
