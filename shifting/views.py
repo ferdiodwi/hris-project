@@ -10,7 +10,15 @@ from rest_framework import (
 
 from rest_framework.decorators import action
 
+from rest_framework.permissions import (
+    IsAuthenticated,
+)
+
 from rest_framework.response import Response
+
+from rest_framework_simplejwt.authentication import (
+    JWTAuthentication,
+)
 
 from .models import (
     ShiftMaster,
@@ -37,6 +45,16 @@ class ShiftMasterViewSet(
         ShiftMasterSerializer
     )
 
+    # JWT Authentication
+    authentication_classes = [
+        JWTAuthentication,
+    ]
+
+    # Wajib sudah login / punya JWT valid
+    permission_classes = [
+        IsAuthenticated,
+    ]
+
 
 class ShiftRosterViewSet(
     viewsets.ModelViewSet
@@ -44,6 +62,16 @@ class ShiftRosterViewSet(
     serializer_class = (
         ShiftRosterSerializer
     )
+
+    # JWT Authentication
+    authentication_classes = [
+        JWTAuthentication,
+    ]
+
+    # Wajib sudah login / punya JWT valid
+    permission_classes = [
+        IsAuthenticated,
+    ]
 
     def get_queryset(self):
         queryset = (
