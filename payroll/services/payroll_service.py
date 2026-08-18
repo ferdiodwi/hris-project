@@ -390,6 +390,10 @@ def process_payroll_run(payroll_run):
                         "net_salary"
                     ],
 
+                    bank_account_no=(
+                        profile.bank_account_no
+                    ),
+
                     calculation_detail=result[
                         "calculation_detail"
                     ],

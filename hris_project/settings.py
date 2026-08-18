@@ -15,6 +15,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import pymysql
 
+
 pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -170,5 +171,15 @@ REST_FRAMEWORK = {
         'login': '5/min' # Custom throttle untuk endpoint login
     }
 }
+
+FIELD_ENCRYPTION_KEY = os.getenv(
+    "FIELD_ENCRYPTION_KEY"
+)
+
+MEDIA_URL = "/media/"
+
+MEDIA_ROOT = (
+    BASE_DIR / "media"
+)   
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
