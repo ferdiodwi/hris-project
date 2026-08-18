@@ -1,5 +1,8 @@
 from django.db import models
-
+from hris_project.common.encrypted_fields import (
+    EncryptedCharField,
+    EncryptedDecimalField,
+)
 
 # =========================================================
 # SALARY COMPONENT
@@ -34,18 +37,14 @@ class SalaryComponent(models.Model):
         default=CalculationMethod.FIXED
     )
 
-    amount = models.DecimalField(
-        max_digits=15,
-        decimal_places=2,
-        default=0
-    )
+    amount = EncryptedDecimalField(
+    default=0
+)
 
-    rate_per_day = models.DecimalField(
-        max_digits=15,
-        decimal_places=2,
-        null=True,
-        blank=True
-    )
+    rate_per_day = EncryptedDecimalField(
+    null=True,
+    blank=True
+)
 
     is_active = models.BooleanField(
         default=True
@@ -95,10 +94,19 @@ class PayrollProfile(models.Model):
         default=PTKPStatus.TK_0,
     )
 
-    bpjs_wage = models.DecimalField(
-        max_digits=15,
-        decimal_places=2,
-        default=0,
+    bpjs_wage = EncryptedDecimalField(
+    default=0,
+    )
+
+    bank_code = models.CharField(
+    max_length=20,
+    blank=True,
+    default="",
+    )
+
+    bank_account_no = EncryptedCharField(
+        null=True,
+        blank=True,
     )
 
     jkk_risk = models.CharField(
@@ -187,34 +195,24 @@ class Payslip(models.Model):
         related_name="payslips",
     )
 
-    gross_salary = models.DecimalField(
-        max_digits=15,
-        decimal_places=2,
-        default=0,
+    gross_salary = EncryptedDecimalField(
+        default=0
     )
 
-    pph21_amount = models.DecimalField(
-        max_digits=15,
-        decimal_places=2,
-        default=0,
+    pph21_amount = EncryptedDecimalField(
+    default=0
+)
+
+    bpjs_amount = EncryptedDecimalField(
+        default=0
     )
 
-    bpjs_amount = models.DecimalField(
-        max_digits=15,
-        decimal_places=2,
-        default=0,
+    total_deduction = EncryptedDecimalField(
+    default=0
     )
 
-    total_deduction = models.DecimalField(
-        max_digits=15,
-        decimal_places=2,
-        default=0,
-    )
-
-    net_salary = models.DecimalField(
-        max_digits=15,
-        decimal_places=2,
-        default=0,
+    net_salary = EncryptedDecimalField(
+    default=0
     )
 
     pdf_url = models.CharField(
@@ -223,16 +221,20 @@ class Payslip(models.Model):
         blank=True,
     )
 
-    bank_account_no = models.CharField(
-        max_length=30,
-        null=True,
-        blank=True,
+    bank_account_no = EncryptedCharField(
+    null=True,
+    blank=True,
     )
 
     calculation_detail = models.JSONField(
         default=dict,
         blank=True,
     )
+
+    pdf_password = EncryptedCharField(
+    null=True,
+    blank=True,
+)
 
     class Meta:
         db_table = "Payslip"

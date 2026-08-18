@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.core.exceptions import ValidationError
+from hris_project.common.encrypted_fields import (
+    EncryptedCharField,
+)
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **extra_fields):
@@ -50,7 +53,10 @@ class Employee(models.Model):
     phone = models.CharField(max_length=30, null=True, blank=True)
     emergency_contact = models.CharField(max_length=150, null=True, blank=True)
     bpjs_no = models.CharField(max_length=30, null=True, blank=True)
-    npwp_no = models.CharField(max_length=30, null=True, blank=True)
+    npwp_no = EncryptedCharField(
+    null=True,
+    blank=True,
+)
     status = models.CharField(max_length=20, default='active')
     hire_date = models.DateField(null=True, blank=True)
     termination_date = models.DateField(null=True, blank=True)
