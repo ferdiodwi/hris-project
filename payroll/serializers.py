@@ -64,3 +64,18 @@ class SalaryComponentSerializer(serializers.ModelSerializer):
                 })
 
         return attrs
+
+
+class MealAllowanceCalculationSerializer(
+    serializers.Serializer
+):
+    month = serializers.IntegerField(
+        min_value=1,
+        max_value=12,
+        required=True,
+    )
+
+    year = serializers.IntegerField(
+        min_value=2000,
+        required=True,
+    )
