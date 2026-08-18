@@ -33,4 +33,8 @@ urlpatterns = [
         "api/payroll/",
         include("payroll.urls")
     ),
+    path(
+        "api/attendance/",
+        include("attendance.urls"),
+    ),
 ]
