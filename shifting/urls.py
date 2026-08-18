@@ -1,10 +1,20 @@
-from django.urls import include, path
-from rest_framework.routers import DefaultRouter
+from django.urls import (
+    include,
+    path,
+)
 
-from .views import ShiftMasterViewSet
+from rest_framework.routers import (
+    DefaultRouter,
+)
+
+from .views import (
+    ShiftMasterViewSet,
+    ShiftRosterViewSet,
+)
 
 
 router = DefaultRouter()
+
 
 router.register(
     "shift-masters",
@@ -13,6 +23,16 @@ router.register(
 )
 
 
+router.register(
+    "shift-rosters",
+    ShiftRosterViewSet,
+    basename="shift-roster",
+)
+
+
 urlpatterns = [
-    path("", include(router.urls)),
+    path(
+        "",
+        include(router.urls),
+    ),
 ]
