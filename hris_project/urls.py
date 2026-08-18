@@ -37,4 +37,8 @@ urlpatterns = [
         "api/attendance/",
         include("attendance.urls"),
     ),
+    path(
+    "api/approval-requests/",
+    include("approvals.urls"),
+),
 ]
