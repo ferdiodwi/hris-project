@@ -210,3 +210,77 @@ class KpiAppraisal(models.Model):
             f"{self.appraisal_type} - "
             f"{self.score}"
         )
+
+class KpiTask(models.Model):
+
+    class Status(models.TextChoices):
+        TODO = "TODO", "To-Do"
+        IN_PROGRESS = "IN_PROGRESS", "In Progress"
+        DONE = "DONE", "Done"
+
+    goal = models.ForeignKey(
+        KpiGoal,
+        on_delete=models.CASCADE,
+        related_name="tasks",
+        db_column="goal_id",
+    )
+
+    title = models.CharField(
+        max_length=255,
+    )
+
+    description = models.TextField(
+        blank=True,
+        default="",
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.TODO,
+    )
+
+    due_date = models.DateField(
+        null=True,
+        blank=True,
+    )
+
+    created_by = models.ForeignKey(
+        "accounts.Employee",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="created_kpi_tasks",
+        db_column="created_by_id",
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    class Meta:
+        db_table = "KpiTask"
+
+        ordering = [
+            "-created_at",
+        ]
+
+        indexes = [
+            models.Index(
+                fields=[
+                    "goal",
+                    "status",
+                ]
+            ),
+        ]
+
+    def __str__(self):
+        return (
+            f"{self.goal.employee.employee_code} - "
+            f"{self.title} - "
+            f"{self.status}"
+        )

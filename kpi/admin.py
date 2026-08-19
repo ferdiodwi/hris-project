@@ -3,6 +3,7 @@ from django.contrib import admin
 from .models import (
     KpiAppraisal,
     KpiGoal,
+    KpiTask,
 )
 
 
@@ -64,4 +65,31 @@ class KpiAppraisalAdmin(
         "employee__full_name",
         "reviewer__employee_code",
         "reviewer__full_name",
+    ]
+
+@admin.register(KpiTask)
+class KpiTaskAdmin(
+    admin.ModelAdmin
+):
+
+    list_display = [
+        "id",
+        "goal",
+        "title",
+        "status",
+        "due_date",
+        "created_by",
+        "created_at",
+    ]
+
+    list_filter = [
+        "status",
+        "due_date",
+    ]
+
+    search_fields = [
+        "title",
+        "goal__title",
+        "goal__employee__employee_code",
+        "goal__employee__full_name",
     ]
