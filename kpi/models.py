@@ -115,3 +115,98 @@ class KpiGoal(models.Model):
             f"{self.employee.employee_code} - "
             f"{self.title}"
         )
+
+class KpiAppraisal(models.Model):
+
+    class AppraisalType(models.TextChoices):
+        MANAGER = "MANAGER", "Manager"
+        PEER = "PEER", "Peer"
+        SELF = "SELF", "Self"
+
+    employee = models.ForeignKey(
+        "accounts.Employee",
+        on_delete=models.CASCADE,
+        related_name="received_kpi_appraisals",
+        db_column="employee_id",
+    )
+
+    reviewer = models.ForeignKey(
+        "accounts.Employee",
+        on_delete=models.CASCADE,
+        related_name="submitted_kpi_appraisals",
+        db_column="reviewer_id",
+    )
+
+    appraisal_type = models.CharField(
+        max_length=20,
+        choices=AppraisalType.choices,
+    )
+
+    period_type = models.CharField(
+        max_length=20,
+        choices=KpiGoal.PeriodType.choices,
+    )
+
+    year = models.PositiveSmallIntegerField(
+        validators=[
+            MinValueValidator(2000),
+            MaxValueValidator(2100),
+        ],
+    )
+
+    quarter = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(4),
+        ],
+    )
+
+    score = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(100),
+        ],
+    )
+
+    comment = models.TextField(
+        blank=True,
+        default="",
+    )
+
+    submitted_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    class Meta:
+        db_table = "KpiAppraisal"
+
+        ordering = [
+            "-year",
+            "-quarter",
+            "-submitted_at",
+        ]
+
+        indexes = [
+            models.Index(
+                fields=[
+                    "employee",
+                    "year",
+                    "period_type",
+                ]
+            ),
+        ]
+
+    def __str__(self):
+        return (
+            f"{self.employee.employee_code} - "
+            f"{self.appraisal_type} - "
+            f"{self.score}"
+        )
