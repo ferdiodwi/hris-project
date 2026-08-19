@@ -49,8 +49,13 @@ urlpatterns = [
     ),
 
     path(
-    "api/",
-    include("payroll.pay03_urls"),
+        "api/",
+        include("payroll.pay03_urls"),
+    ),
+
+    path(
+        "api/kpi/",
+        include("kpi.urls"),
     ),
 ]
 
