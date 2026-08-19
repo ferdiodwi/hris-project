@@ -1,3 +1,117 @@
+from django.core.validators import (
+    MaxValueValidator,
+    MinValueValidator,
+)
 from django.db import models
 
-# Create your models here.
+
+class KpiGoal(models.Model):
+
+    class PeriodType(models.TextChoices):
+        QUARTERLY = "QUARTERLY", "Quarterly"
+        YEARLY = "YEARLY", "Yearly"
+
+    class Status(models.TextChoices):
+        PENDING = "PENDING", "Pending"
+        APPROVED = "APPROVED", "Approved"
+
+    employee = models.ForeignKey(
+        "accounts.Employee",
+        on_delete=models.CASCADE,
+        related_name="kpi_goals",
+        db_column="employee_id",
+    )
+
+    title = models.CharField(
+        max_length=255,
+    )
+
+    description = models.TextField(
+        blank=True,
+        default="",
+    )
+
+    period_type = models.CharField(
+        max_length=20,
+        choices=PeriodType.choices,
+    )
+
+    year = models.PositiveSmallIntegerField(
+        validators=[
+            MinValueValidator(2000),
+            MaxValueValidator(2100),
+        ],
+    )
+
+    quarter = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(4),
+        ],
+    )
+
+    weight = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0.01),
+            MaxValueValidator(100),
+        ],
+    )
+
+    target_value = models.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
+
+    unit = models.CharField(
+        max_length=50,
+        blank=True,
+        default="",
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.PENDING,
+    )
+
+    approved_by = models.ForeignKey(
+        "accounts.Employee",
+        on_delete=models.SET_NULL,
+        related_name="approved_kpi_goals",
+        null=True,
+        blank=True,
+        db_column="approved_by_id",
+    )
+
+    approved_at = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    class Meta:
+        db_table = "KpiGoal"
+        ordering = [
+            "-year",
+            "-quarter",
+            "-created_at",
+        ]
+
+    def __str__(self):
+        return (
+            f"{self.employee.employee_code} - "
+            f"{self.title}"
+        )
