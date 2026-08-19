@@ -5,6 +5,7 @@ from rest_framework.routers import (
 from .views import (
     KpiAppraisalViewSet,
     KpiGoalViewSet,
+    KpiTaskViewSet,
 )
 
 
@@ -22,5 +23,11 @@ router.register(
     basename="kpi-appraisal",
 )
 
+
+router.register(
+    "tasks",
+    KpiTaskViewSet,
+    basename="kpi-task",
+)
 
 urlpatterns = router.urls

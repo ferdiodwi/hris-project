@@ -3,6 +3,7 @@ from rest_framework import serializers
 from .models import (
     KpiAppraisal,
     KpiGoal,
+    KpiTask,
 )
 
 
@@ -304,3 +305,84 @@ class KpiFinalScoreQuerySerializer(
             )
 
         return attrs
+
+class KpiTaskSerializer(
+    serializers.ModelSerializer
+):
+
+    goal_title = serializers.CharField(
+        source="goal.title",
+        read_only=True,
+    )
+
+    employee_id = serializers.IntegerField(
+        source="goal.employee.id",
+        read_only=True,
+    )
+
+    employee_code = serializers.CharField(
+        source="goal.employee.employee_code",
+        read_only=True,
+    )
+
+    employee_name = serializers.CharField(
+        source="goal.employee.full_name",
+        read_only=True,
+    )
+
+    created_by_code = serializers.CharField(
+        source="created_by.employee_code",
+        read_only=True,
+    )
+
+    created_by_name = serializers.CharField(
+        source="created_by.full_name",
+        read_only=True,
+    )
+
+    status_label = serializers.SerializerMethodField()
+
+    class Meta:
+        model = KpiTask
+
+        fields = [
+            "id",
+            "goal",
+            "goal_title",
+            "employee_id",
+            "employee_code",
+            "employee_name",
+            "title",
+            "description",
+            "status",
+            "status_label",
+            "due_date",
+            "created_by",
+            "created_by_code",
+            "created_by_name",
+            "created_at",
+            "updated_at",
+        ]
+
+        read_only_fields = [
+            "id",
+            "status",
+            "created_by",
+            "created_at",
+            "updated_at",
+        ]
+
+    def get_status_label(
+        self,
+        obj,
+    ):
+        return obj.get_status_display()
+
+
+class KpiTaskStatusSerializer(
+    serializers.Serializer
+):
+
+    status = serializers.ChoiceField(
+        choices=KpiTask.Status.choices,
+    )

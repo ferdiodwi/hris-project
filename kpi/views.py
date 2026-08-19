@@ -43,6 +43,7 @@ from rest_framework.viewsets import (
 from .models import (
     KpiAppraisal,
     KpiGoal,
+    KpiTask,
 )
 
 from .serializers import (
@@ -50,6 +51,8 @@ from .serializers import (
     KpiFinalScoreQuerySerializer,
     KpiGoalSerializer,
     KpiGoalSetTargetSerializer,
+    KpiTaskSerializer,
+    KpiTaskStatusSerializer,
 )
 
 from accounts.models import Employee
@@ -684,6 +687,275 @@ class KpiAppraisalViewSet(
                 "breakdown": breakdown,
                 "final_score": str(
                     final_score
+                ),
+            },
+            status=status.HTTP_200_OK,
+        )
+
+class KpiTaskViewSet(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    GenericViewSet,
+):
+
+    serializer_class = KpiTaskSerializer
+
+    permission_classes = [
+        IsAuthenticated,
+    ]
+
+    def get_current_employee(self):
+        try:
+            return Employee.objects.get(
+                user=self.request.user
+            )
+
+        except Employee.DoesNotExist:
+            raise PermissionDenied(
+                "User login tidak memiliki "
+                "data Employee."
+            )
+
+    def get_queryset(self):
+        current_employee = (
+            self.get_current_employee()
+        )
+
+        queryset = (
+            KpiTask.objects
+            .select_related(
+                "goal",
+                "goal__employee",
+                "created_by",
+            )
+            .filter(
+                Q(
+                    goal__employee=(
+                        current_employee
+                    )
+                )
+                |
+                Q(
+                    goal__employee__reports_to=(
+                        current_employee
+                    )
+                )
+            )
+            .distinct()
+        )
+
+        status_filter = (
+            self.request.query_params.get(
+                "status"
+            )
+        )
+
+        if status_filter:
+            if (
+                status_filter
+                not in KpiTask.Status.values
+            ):
+                raise ValidationError(
+                    {
+                        "status": (
+                            "Status harus TODO, "
+                            "IN_PROGRESS, atau DONE."
+                        )
+                    }
+                )
+
+            queryset = queryset.filter(
+                status=status_filter
+            )
+
+        goal_id = (
+            self.request.query_params.get(
+                "goal_id"
+            )
+        )
+
+        if goal_id:
+            queryset = queryset.filter(
+                goal_id=goal_id
+            )
+
+        return queryset
+        
+    def perform_create(
+        self,
+        serializer,
+    ):
+        creator = (
+            self.get_current_employee()
+        )
+
+        goal = (
+            serializer.validated_data[
+                "goal"
+            ]
+        )
+
+        goal_owner = goal.employee
+
+        is_owner = (
+            goal_owner.id
+            == creator.id
+        )
+
+        is_direct_manager = (
+            goal_owner.reports_to_id
+            == creator.id
+        )
+
+        if (
+            not is_owner
+            and not is_direct_manager
+        ):
+            raise PermissionDenied(
+                "Task hanya dapat dibuat "
+                "oleh pemilik goal atau "
+                "manager langsungnya."
+            )
+
+        serializer.save(
+            created_by=creator
+        )
+
+    @action(
+        detail=True,
+        methods=["patch"],
+        url_path="status",
+    )
+    def update_status(
+        self,
+        request,
+        pk=None,
+    ):
+        task = self.get_object()
+
+        current_employee = (
+            self.get_current_employee()
+        )
+
+        if (
+            task.goal.employee_id
+            != current_employee.id
+        ):
+            raise PermissionDenied(
+                "Status task hanya dapat "
+                "diubah oleh pemilik task."
+            )
+
+        serializer = (
+            KpiTaskStatusSerializer(
+                data=request.data
+            )
+        )
+
+        serializer.is_valid(
+            raise_exception=True
+        )
+
+        task.status = (
+            serializer.validated_data[
+                "status"
+            ]
+        )
+
+        task.save(
+            update_fields=[
+                "status",
+                "updated_at",
+            ]
+        )
+
+        return Response(
+            KpiTaskSerializer(
+                task
+            ).data,
+            status=status.HTTP_200_OK,
+        )
+
+
+    @action(
+
+        detail=False,
+        methods=["get"],
+        url_path="monitor",
+    )
+
+    def monitor(
+        self,
+        request,
+    ):
+        manager = (
+            self.get_current_employee()
+        )
+
+        tasks = (
+            KpiTask.objects
+            .select_related(
+                "goal",
+                "goal__employee",
+                "created_by",
+            )
+            .filter(
+                goal__employee__reports_to=(
+                    manager
+                )
+            )
+        )
+
+        total = tasks.count()
+
+        todo = tasks.filter(
+            status=KpiTask.Status.TODO
+        ).count()
+
+        in_progress = tasks.filter(
+            status=(
+                KpiTask.Status.IN_PROGRESS
+            )
+        ).count()
+
+        done = tasks.filter(
+            status=KpiTask.Status.DONE
+        ).count()
+
+        if total > 0:
+            progress_percent = (
+                Decimal(done)
+                / Decimal(total)
+                * Decimal("100")
+            ).quantize(
+                Decimal("0.01"),
+                rounding=ROUND_HALF_UP,
+            )
+
+        else:
+            progress_percent = (
+                Decimal("0.00")
+            )
+
+        return Response(
+            {
+                "summary": {
+                    "total": total,
+                    "todo": todo,
+                    "in_progress": (
+                        in_progress
+                    ),
+                    "done": done,
+                    "progress_percent": str(
+                        progress_percent
+                    ),
+                },
+                "tasks": (
+                    KpiTaskSerializer(
+                        tasks,
+                        many=True,
+                    ).data
                 ),
             },
             status=status.HTTP_200_OK,
